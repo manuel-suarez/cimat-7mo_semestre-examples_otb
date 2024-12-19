@@ -20,3 +20,6 @@ target_link_libraries(VectorPipeline ${OTB_LIBRARIES})
 
 add_executable(FilteringPipeline FilteringPipeline.cxx)
 target_link_libraries(FilteringPipeline ${OTB_LIBRARIES})
+
+add_executable(ScalingPipeline ScalingPipeline.cxx)
+target_link_libraries(ScalingPipeline ${OTB_LIBRARIES})
