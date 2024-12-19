@@ -17,3 +17,6 @@ target_link_libraries(Pipeline ${OTB_LIBRARIES})
 
 add_executable(VectorPipeline VectorPipeline.cxx)
 target_link_libraries(VectorPipeline ${OTB_LIBRARIES})
+
+add_executable(FilteringPipeline FilteringPipeline.cxx)
+target_link_libraries(FilteringPipeline ${OTB_LIBRARIES})
