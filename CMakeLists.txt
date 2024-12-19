@@ -11,3 +11,6 @@ endif(OTB_FOUND)
 
 add_executable(HelloWorldOTB HelloWorldOTB.cxx )
 target_link_libraries(HelloWorldOTB ${OTB_LIBRARIES})
+
+add_executable(Pipeline Pipeline.cxx)
+target_link_libraries(Pipeline ${OTB_LIBRARIES})
