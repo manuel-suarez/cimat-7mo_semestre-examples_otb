@@ -11,3 +11,5 @@ endif(OTB_FOUND)
 add_executable(ImageExample ImageExample.cpp)
 target_link_libraries(ImageExample ${OTB_LIBRARIES})
 
+add_executable(ImageFilter ImageFilter.cpp)
+target_link_libraries(ImageFilter ${OTB_LIBRARIES})
