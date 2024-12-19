@@ -14,3 +14,6 @@ target_link_libraries(HelloWorldOTB ${OTB_LIBRARIES})
 
 add_executable(Pipeline Pipeline.cxx)
 target_link_libraries(Pipeline ${OTB_LIBRARIES})
+
+add_executable(VectorPipeline VectorPipeline.cxx)
+target_link_libraries(VectorPipeline ${OTB_LIBRARIES})
