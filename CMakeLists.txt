@@ -23,3 +23,6 @@ target_link_libraries(FilteringPipeline ${OTB_LIBRARIES})
 
 add_executable(ScalingPipeline ScalingPipeline.cxx)
 target_link_libraries(ScalingPipeline ${OTB_LIBRARIES})
+
+add_executable(Multispectral Multispectral.cxx)
+target_link_libraries(Multispectral ${OTB_LIBRARIES})
