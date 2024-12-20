@@ -14,3 +14,6 @@ target_link_libraries(ImageRegionIterator ${OTB_LIBRARIES})
 
 add_executable(NeighborhoodIterators1 NeighborhoodIterators1.cpp)
 target_link_libraries(NeighborhoodIterators1 ${OTB_LIBRARIES})
+
+add_executable(NeighborhoodIterators2 NeighborhoodIterators2.cpp)
+target_link_libraries(NeighborhoodIterators2 ${OTB_LIBRARIES})
