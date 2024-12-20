@@ -17,3 +17,6 @@ target_link_libraries(CustomFilterExample ${OTB_LIBRARIES})
 
 add_executable(FunctorImageFilterExample FunctorImageFilterExample.cpp )
 target_link_libraries(FunctorImageFilterExample ${OTB_LIBRARIES})
+
+add_executable(NeighborhoodIteratorFilterExample NeighborhoodIteratorFilterExample.cpp )
+target_link_libraries(NeighborhoodIteratorFilterExample ${OTB_LIBRARIES})

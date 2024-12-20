@@ -1,7 +1,7 @@
-#include "itkImage.h"
-#include "itkImageFileReader.h"
-#include "itkImageFileWriter.h"
 #include "itkUnaryFunctorImageFilter.h"
+#include "otbImage.h"
+#include "otbImageFileReader.h"
+#include "otbImageFileWriter.h"
 #include <cmath>
 
 // Define the functor for a logarithmic transformation
@@ -47,11 +47,11 @@ int main(int argc, char *argv[]) {
   // Define image types
   constexpr unsigned int Dimension = 2;
   typedef float PixelType; // Float for SAR image precision
-  typedef itk::Image<PixelType, Dimension> ImageType;
+  typedef otb::Image<PixelType, Dimension> ImageType;
 
   // Define the reader and writer
-  typedef itk::ImageFileReader<ImageType> ReaderType;
-  typedef itk::ImageFileWriter<ImageType> WriterType;
+  typedef otb::ImageFileReader<ImageType> ReaderType;
+  typedef otb::ImageFileWriter<ImageType> WriterType;
 
   // Define the functor filter type
   typedef itk::Functor::LogTransform<PixelType, PixelType> FunctorType;
