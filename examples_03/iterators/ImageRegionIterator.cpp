@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 
   const unsigned int Dimension = 2;
 
-  using PixelType = unsigned char;
+  using PixelType = double;
   using ImageType = otb::Image<PixelType, Dimension>;
 
   using ConstIteratorType = itk::ImageRegionConstIterator<ImageType>;
