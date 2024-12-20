@@ -11,3 +11,6 @@ endif(OTB_FOUND)
 
 add_executable(CompositeFilterExample CompositeFilterExample.cpp )
 target_link_libraries(CompositeFilterExample ${OTB_LIBRARIES})
+
+add_executable(CustomFilterExample CustomFilterExample.cpp )
+target_link_libraries(CustomFilterExample ${OTB_LIBRARIES})
