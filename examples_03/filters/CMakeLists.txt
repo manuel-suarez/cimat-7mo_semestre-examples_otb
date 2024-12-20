@@ -14,3 +14,6 @@ target_link_libraries(CompositeFilterExample ${OTB_LIBRARIES})
 
 add_executable(CustomFilterExample CustomFilterExample.cpp )
 target_link_libraries(CustomFilterExample ${OTB_LIBRARIES})
+
+add_executable(FunctorImageFilterExample FunctorImageFilterExample.cpp )
+target_link_libraries(FunctorImageFilterExample ${OTB_LIBRARIES})
