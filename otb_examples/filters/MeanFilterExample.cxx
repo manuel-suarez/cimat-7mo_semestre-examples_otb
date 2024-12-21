@@ -98,6 +98,9 @@ template <class TImageType> void MeanFilterExample<TImageType>::GenerateData() {
   typename TImageType::ConstPointer inputImage = this->GetInput();
   typename TImageType::Pointer outputImage = this->GetOutput();
 
+  outputImage->SetRegions(inputImage->GetLargestPossibleRegion());
+  outputImage->Allocate();
+
   // Declare input/output iterators types
   using NeighborhoodIteratorType = itk::ConstNeighborhoodIterator<TImageType>;
   using OutputIteratorType = itk::ImageRegionIterator<TImageType>;
