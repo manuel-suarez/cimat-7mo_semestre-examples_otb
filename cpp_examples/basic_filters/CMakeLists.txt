@@ -11,3 +11,9 @@ endif(OTB_FOUND)
 
 add_executable(BandMathFilterExample BandMathFilterExample.cxx)
 target_link_libraries(BandMathFilterExample ${OTB_LIBRARIES})
+
+add_executable(FrostImageFilter FrostImageFilter.cxx)
+target_link_libraries(FrostImageFilter ${OTB_LIBRARIES})
+
+add_executable(LeeImageFilter LeeImageFilter.cxx)
+target_link_libraries(LeeImageFilter ${OTB_LIBRARIES})
