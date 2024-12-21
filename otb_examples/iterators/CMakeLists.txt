@@ -15,9 +15,9 @@ target_link_libraries(NeighborhoodIterators1 ${OTB_LIBRARIES})
 add_executable(NeighborhoodIterators1a NeighborhoodIterators1a.cxx)
 target_link_libraries(NeighborhoodIterators1a ${OTB_LIBRARIES})
 
-add_executable(NeighborhoodIterators1b NeighborhoodIterators1b.cxx)
-target_link_libraries(NeighborhoodIterators1b ${OTB_LIBRARIES})
+add_executable(NeighborhoodIteratorsMean NeighborhoodIteratorsMean.cxx)
+target_link_libraries(NeighborhoodIteratorsMean ${OTB_LIBRARIES})
 
-add_executable(NeighborhoodIterators1c NeighborhoodIterators1c.cxx)
-target_link_libraries(NeighborhoodIterators1c ${OTB_LIBRARIES})
+add_executable(NeighborhoodIteratorsVariance NeighborhoodIteratorsVariance.cxx)
+target_link_libraries(NeighborhoodIteratorsVariance ${OTB_LIBRARIES})
 

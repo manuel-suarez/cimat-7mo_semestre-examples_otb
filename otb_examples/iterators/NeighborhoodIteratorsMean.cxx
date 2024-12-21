@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
   //  extends one pixel away from the neighborhood center in every dimension.
 
   NeighborhoodIteratorType::RadiusType radius;
-  radius.Fill(3);
+  radius.Fill(1);
   NeighborhoodIteratorType it(radius, reader->GetOutput(),
                               reader->GetOutput()->GetRequestedRegion());
 
