@@ -48,28 +48,26 @@ public:
   /** Display */
   void PrintSelf(std::ostream &os, itk::Indent indent) const override;
 
+  using PixelType = typename TImageType::PixelType;
+
   itkGetMacro(Radius, unsigned int);
   itkSetMacro(Radius, unsigned int);
 
 protected:
   MeanFilterExample();
+  ~MeanFilterExample() override = default;
 
   //  Now we can declare the component filter types, templated over the
   //  enclosing image type:
 
 protected:
-  using ThresholdType = itk::ThresholdImageFilter<TImageType>;
-  using GradientType =
-      itk::GradientMagnitudeImageFilter<TImageType, TImageType>;
-  using RescalerType = itk::RescaleIntensityImageFilter<TImageType, TImageType>;
-
   void GenerateData() override;
 
 private:
   // As stated in documentation, we need to ensure that the filter is created
   // only by means of the factory methods
-  MeanFilterExample(Self &);    // prevent copying operator
-  void operator=(const Self &); // prevent assignment operator
+  MeanFilterExample(const Self &) = delete; // prevent copying operator
+  void operator=(const Self &) = delete;    // prevent assignment operator
 
   // We declare the radius of the kernel (neighborhooditerators radius)
   unsigned int m_Radius;
@@ -83,18 +81,7 @@ private:
 namespace otb {
 
 template <class TImageType> MeanFilterExample<TImageType>::MeanFilterExample() {
-  m_GradientFilter = GradientType::New();
-  m_ThresholdFilter = ThresholdType::New();
-  m_RescaleFilter = RescalerType::New();
-
-  m_ThresholdFilter->SetInput(m_GradientFilter->GetOutput());
-  m_RescaleFilter->SetInput(m_ThresholdFilter->GetOutput());
-
-  m_Threshold = 1;
-
-  m_RescaleFilter->SetOutputMinimum(
-      itk::NumericTraits<PixelType>::NonpositiveMin());
-  m_RescaleFilter->SetOutputMaximum(itk::NumericTraits<PixelType>::max());
+  m_Radius = 1;
 }
 
 //  The \code{GenerateData()} is where the composite magic happens.  First,
@@ -107,13 +94,39 @@ template <class TImageType> MeanFilterExample<TImageType>::MeanFilterExample() {
 //  it has the result available to the downstream filter.
 
 template <class TImageType> void MeanFilterExample<TImageType>::GenerateData() {
-  m_GradientFilter->SetInput(this->GetInput());
+  // Get input/output filter
+  typename TImageType::ConstPointer inputImage = this->GetInput();
+  typename TImageType::Pointer outputImage = this->GetOutput();
 
-  m_ThresholdFilter->ThresholdBelow(this->m_Threshold);
+  // Declare input/output iterators types
+  using NeighborhoodIteratorType = itk::ConstNeighborhoodIterator<TImageType>;
+  using OutputIteratorType = itk::ImageRegionIterator<TImageType>;
 
-  m_RescaleFilter->GraftOutput(this->GetOutput());
-  m_RescaleFilter->Update();
-  this->GraftOutput(m_RescaleFilter->GetOutput());
+  // Declare and use radius type (assign private member m_Radius)
+  typename NeighborhoodIteratorType::RadiusType radius;
+  radius.Fill(m_Radius);
+
+  // Declare input/output iterators referencing input/output channels
+  NeighborhoodIteratorType inputIterator(radius, inputImage,
+                                         inputImage->GetRequestedRegion());
+  OutputIteratorType outputIterator(outputImage,
+                                    outputImage->GetRequestedRegion());
+
+  // Main iterator code
+  for (inputIterator.GoToBegin(), outputIterator.GoToBegin();
+       !inputIterator.IsAtEnd(); ++inputIterator, ++outputIterator) {
+    float sum = 0.0;
+    unsigned int count = 0;
+
+    for (unsigned int i = 0; i < inputIterator.Size(); ++i) {
+      sum += inputIterator.GetPixel(i);
+      ++count;
+    }
+
+    PixelType meanValue =
+        static_cast<PixelType>((count > 0) ? (sum / count) : 0.0);
+    outputIterator.Set(meanValue);
+  }
 }
 
 //  Finally we define the \code{PrintSelf} method, which (by convention)
@@ -125,7 +138,7 @@ void MeanFilterExample<TImageType>::PrintSelf(std::ostream &os,
                                               itk::Indent indent) const {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "Threshold:" << this->m_Threshold << std::endl;
+  os << indent << "Radius:" << this->m_Radius << std::endl;
 }
 
 } /* end namespace otb */
@@ -147,7 +160,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  using ImageType = otb::Image<short, 2>;
+  using ImageType = otb::Image<float, 2>;
   using ReaderType = otb::ImageFileReader<ImageType>;
   using WriterType = otb::ImageFileWriter<ImageType>;
 
@@ -159,7 +172,7 @@ int main(int argc, char *argv[]) {
 
   reader->SetFileName(argv[1]);
   filter->SetInput(reader->GetOutput());
-  filter->SetThreshold(20);
+  filter->SetRadius(3);
   writer->SetInput(filter->GetOutput());
   writer->SetFileName(argv[2]);
 

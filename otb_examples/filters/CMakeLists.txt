@@ -10,3 +10,6 @@ endif(OTB_FOUND)
 
 add_executable(CompositeFilterExample CompositeFilterExample.cxx)
 target_link_libraries(CompositeFilterExample ${OTB_LIBRARIES})
+
+add_executable(MeanFilterExample MeanFilterExample.cxx)
+target_link_libraries(MeanFilterExample ${OTB_LIBRARIES})
