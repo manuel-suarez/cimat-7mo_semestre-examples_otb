@@ -9,11 +9,9 @@
 //  identical type), we will specialize the ImageToImageFilter:
 
 //  Next we include headers for the component filters:
-
-#include "itkGradientMagnitudeImageFilter.h"
-#include "itkRescaleIntensityImageFilter.h"
-#include "itkThresholdImageFilter.h"
-#include "itkUnaryFunctorImageFilter.h"
+#include "itkConstNeighborhoodIterator.h"
+#include "itkImageRegionIterator.h"
+#include "itkImageToImageFilter.h"
 
 #include "itkNumericTraits.h"
 #include "otbImage.h"
@@ -99,6 +97,7 @@ template <class TImageType> void MeanFilterExample<TImageType>::GenerateData() {
   typename TImageType::Pointer outputImage = this->GetOutput();
 
   outputImage->SetRegions(inputImage->GetLargestPossibleRegion());
+  outputImage->SetRequestedRegion(inputImage->GetRequestedRegion());
   outputImage->Allocate();
 
   // Declare input/output iterators types
@@ -113,17 +112,21 @@ template <class TImageType> void MeanFilterExample<TImageType>::GenerateData() {
   NeighborhoodIteratorType inputIterator(radius, inputImage,
                                          inputImage->GetRequestedRegion());
   OutputIteratorType outputIterator(outputImage,
-                                    outputImage->GetRequestedRegion());
+                                    inputImage->GetRequestedRegion());
 
   // Main iterator code
+  this->GetOutput()->SetRequestedRegion(this->GetInput()->GetRequestedRegion());
+  this->GetOutput()->Allocate();
   for (inputIterator.GoToBegin(), outputIterator.GoToBegin();
        !inputIterator.IsAtEnd(); ++inputIterator, ++outputIterator) {
     float sum = 0.0;
     unsigned int count = 0;
 
     for (unsigned int i = 0; i < inputIterator.Size(); ++i) {
-      sum += inputIterator.GetPixel(i);
-      ++count;
+      if (inputIterator.GetPixel(i) != itk::NumericTraits<PixelType>::Zero) {
+        sum += inputIterator.GetPixel(i);
+        ++count;
+      }
     }
 
     PixelType meanValue =
